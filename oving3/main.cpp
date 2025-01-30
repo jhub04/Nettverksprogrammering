@@ -9,6 +9,7 @@ using namespace std;
 int main()
 {
     int serverSocket, clientSocket;
+    char buffer[1023] = {};
     // Creating socket
     if ((serverSocket = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
         perror("Socket failed");
@@ -36,11 +37,21 @@ int main()
 
     cout << "Server is running on port" << PORT << endl;
 
-    // Accepting connection request
-    if ((clientSocket = accept(serverSocket, nullptr, nullptr)) < 0) {
-        perror("Bind failure");
-        exit(EXIT_FAILURE);
+
+    while (true) {
+        // Accepting connection request
+        if ((clientSocket = accept(serverSocket, nullptr, nullptr)) < 0) {
+            perror("Bind failure");
+            exit(EXIT_FAILURE);
+        }
+
+        // Read request
+        read(clientSocket, buffer, sizeof(buffer));
+        cout << "Recieved request:\n" << buffer << endl;
+
+
     }
+
 
 
     // Closing the socket.
