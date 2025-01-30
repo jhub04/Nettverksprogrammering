@@ -49,14 +49,17 @@ int main()
         read(clientSocket, buffer, sizeof(buffer));
         cout << "Recieved request:\n" << buffer << endl;
 
+        string response = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n"
+                           "<html><body><h1>Server is Working!</h1></body></html>";
 
+        send(clientSocket, response.c_str(), response.size(), 0);
+
+        // Closing the socket.
+        close(serverSocket);
     }
-
-
 
     // Closing the socket.
     close(serverSocket);
-
 
 
     return 0;
