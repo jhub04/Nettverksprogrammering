@@ -6,6 +6,24 @@
 #define PORT 8080
 using namespace std;
 
+string HTTPResponse(const string &request) {
+    string response;
+    if (request.find("GET / HTTP/1.1") != string::npos) {
+        response = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n"
+                   "<html><body><h1>Welcome to the Homepage</h1></body></html>";
+    } else if (request.find("GET /page1 HTTP/1.1") != string::npos) {
+        response = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n"
+                   "<html><body><h1>This is Page 1</h1></body></html>";
+    } else if (request.find("GET /page2 HTTP/1.1") != string::npos) {
+        response = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n"
+                   "<html><body><h1>This is Page 2</h1></body></html>";
+    } else {
+        response = "HTTP/1.1 404 Not Found\r\nContent-Type: text/html\r\n\r\n"
+                   "<html><body><h1>404 Page Not Found</h1></body></html>";
+    }
+    return response;
+}
+
 int main()
 {
     int serverSocket, clientSocket;
@@ -49,8 +67,7 @@ int main()
         read(clientSocket, buffer, sizeof(buffer));
         cout << "Recieved request:\n" << buffer << endl;
 
-        string response = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n"
-                           "<html><body><h1>Server is Working!</h1></body></html>";
+        string response = HTTPResponse(buffer);
 
         send(clientSocket, response.c_str(), response.size(), 0);
 
