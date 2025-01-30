@@ -72,7 +72,7 @@ int main()
         send(clientSocket, response.c_str(), response.size(), 0);
 
         // Closing the socket.
-        close(serverSocket);
+        close(clientSocket);
     }
 
     // Closing the socket.
